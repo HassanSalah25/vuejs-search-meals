@@ -8,58 +8,33 @@
       @input="searchMeals"
     />
   </div>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-5 p-8">
-    <div
-      v-for="meal of meals"
-      :key="meal.idMeal"
-      class="bg-white shadow rounded-xl"
-    >
-      <img
-        :src="meal.strMealThumb"
-        :alt="meal.strMeal"
-        class="rounded-2xl h-48 object-cover w-full"
-      />
-
-      <div class="p-3">
-        <h3 class="font-semibold">{{ meal.strMeal }}</h3>
-        <p class="mb-4">Lorem Lorem</p>
-        <div class="flex items-center justify-between">
-          <a
-            :href="meal.strYoutube"
-            target="_blank"
-            class="px-3 py-2 rounded border border-red-600 hover:bg-red-600 hover:text-white transition-colors"
-            >Youtube</a
-          >
-          <router-link
-            :to="{name: 'mealDetails', params: {id: meal.idMeal}}"
-            class="px-3 py-2 rounded border border-purple-600 hover:bg-purple-600 hover:text-white transition-colors"
-            >View</router-link
-          >
-        </div>
-      </div>
-    </div>
-  </div>
+    <Meals :meals="meals"/>
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from "vue";
-import store from "../store";
-import { useRoute } from "vue-router";
+  import { computed, onMounted, ref } from "vue";
+  import store from "../store";
+  import { useRoute } from "vue-router";
+  import Meals from "../components/Meals.vue";
 
-const route = useRoute();
-const keyword = ref("");
-const meals = computed(() => store.state.searchedMeals);
+  const route = useRoute();
+  const keyword = ref("");
+  const meals = computed(() => store.state.searchedMeals);
 
-function searchMeals() {
-  store.dispatch("searchMeals", keyword.value);
-}
+  function searchMeals() {
+    if(keyword.value)
+    store.dispatch("searchMeals", keyword.value);
+  else
+    store.commit("setSearchedMeals", []);
+  
+  }
 
-onMounted(() => {
-    keyword.value = route.params.name
-    if(keyword.value){
-        searchMeals();
-    }
-})
+  onMounted(() => {
+      keyword.value = route.params.name
+      if(keyword.value){
+          searchMeals();
+      }
+  })
 </script>
 
 <style scoped></style>

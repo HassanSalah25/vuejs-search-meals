@@ -13,12 +13,13 @@
             {{ ingredients }}
          </pre>
     </div>
+
+    
 </template>
 
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import store from '../store';
 import axiosClient from '../axiosClient';
 
 
